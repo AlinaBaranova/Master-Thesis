@@ -1,0 +1,155 @@
+\documentclass[twoside,bibtotoc,BCOR=9mm]{scrreprt}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{palatino}
+\usepackage[sc,osf]{mathpazo}
+\usepackage{microtype}
+
+\usepackage[german,english]{babel}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{tabularx} 
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{tuebingerspruechle-utf8}
+\usepackage{graphicx}
+\usepackage{rotating}
+\usepackage{listings}
+\usepackage{multicol}
+\usepackage{acronym}
+\usepackage{avm}
+\usepackage[pdftex,breaklinks=true]{hyperref}
+\usepackage{gb4e}
+\usepackage{float}
+% \usepackage{verbatim}
+
+\hypersetup{pdftitle={Title Goes Here}}
+\hypersetup{pdfauthor={Author Goes here}}
+\hypersetup{pdfsubject={}}
+\hypersetup{pdfkeywords={}}
+
+\definecolor{UniBlue}{rgb}{0,0.24,0.5}
+\definecolor{FurtherResearchColor}{rgb}{0.5,0,0}
+% KOMA script fonts
+\setkomafont{title}{\bfseries\color{UniBlue}}
+\setkomafont{sectioning}{\normalfont}
+\addtokomafont{sectioning}{\color{UniBlue}}
+
+\avmfont{\sc}
+\avmoptions{sorted,active}
+\avmvalfont{\rm}
+\avmsortfont{\scriptsize\it}
+
+
+\bibpunct{(}{)}{;}{a}{,}{,}
+\setcounter{secnumdepth}{5}
+%\setcounter{tocdepth}{3}
+
+% set spacing for easier reading (and more pages...)
+\onehalfspacing
+
+\newcommand{\todo}[1]{\textsc{\textbf{\color{red}TODO:} #1}}
+\newcommand{\furtherresearch}[1]{\small\color{FurtherResearchColor}\textsc{Further
+Research:} #1}
+
+\newcommand{\boxnum}[1]{
+{\fbox{\footnotesize {#1}}}
+}
+
+% some formatting commands
+\newcommand{\classname}[1]{{\tt {#1}}}
+\newcommand{\methodname}[1]{{\tt {#1}}}
+\newcommand{\ifacename}[1]{{\tt\itshape {#1}}}
+\newcommand{\packagename}[1]{{\sf\itshape {#1}}}
+\newcommand{\code}[1]{{\tt {#1}}}
+
+% new lst environment for code snippets
+\lstnewenvironment{plainsnippet}
+{
+  \lstset{
+    basicstyle=\footnotesize\tt,
+    frameround=ffff,
+    frame=trbl,
+    xleftmargin=1cm,
+    xrightmargin=1cm,
+    %aboveskip=.4cm,
+    %belowskip=.4cm,
+    aboveskip=.5cm,
+    belowskip=.5cm,
+    extendedchars=true,
+    inputencoding=latin1
+ }
+}
+{}
+
+
+\begin{document}
+\bibliographystyle{plainnat}
+% \bibliographystyle{acl}
+
+% TITLE --------------------------------------------------------------------
+\titlehead{\begin{multicols}{2}
+\begin{flushleft}
+{\Large Universität Tübingen\\}
+Seminar für Sprachwissenschaft\\
+Wilhelmstraße 19\\
+72074 Tübingen\\
+\end{flushleft}
+\begin{flushright}
+\includegraphics[scale=0.353]{uni-logo.pdf}
+\end{flushright}
+\end{multicols}}
+\subject{M.A. Thesis in Computational Linguistics}
+\title{Android App Development for Language Learning: Combining input and interaction in learning German through song lyrics}
+\author{Alina Baranova\\
+  {\small \texttt{alina.baranova@student.uni-tuebingen.de}}}
+\publishers{
+\begin{tabular}{ll}
+First Examiner and Supervisor: & Prof. Dr. Detmar Meurers\\
+Second Examiner: & Second, PhD \\
+\end{tabular}}
+\date{}  
+\maketitle
+\SpruechleAufsagen{Alina Baranova}
+\clearpage
+
+{\centering \Large \color{UniBlue} Abstract\\[.5cm]}
+ENGLISH ABSTRACT HERE
+\clearpage
+\selectlanguage{german}
+{\centering \Large \color{UniBlue} Zusammenfassung\\[.5cm]}
+GERMAN ABSTRACT HERE
+\selectlanguage{english}
+
+\tableofcontents
+% \pagebreak
+
+{
+\singlespacing
+\begingroup
+\let\chapter=\section
+\let\addchap=\addsec
+% \listoftables
+% \listoffigures
+\endgroup
+}
+
+
+\chapter{Introduction}
+
+\input{contents/related-work.tex}
+\input{contents/lyrics-to-audio-alignment.tex}
+\input{contents/grammatical-questions.tex}
+
+\chapter{Conclusion}
+\label{ch-outro}
+
+\bibliography{contents/bibliography.bib}
+
+% \appendix
+
+% \chapter{List of Abbreviations}
+% \label{app-abbrev}
+%\input{abbreviations.tex}
+
+\end{document}

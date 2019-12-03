@@ -1,0 +1,76 @@
+\chapter{Grammatical Questions}
+\label{sec:grammar}
+
+\section{Grammar Topics}
+
+\section{Tools For Extracting Grammatical Constructions}
+
+In order to extract chosen grammatical constructions from song texts, a suitable dependency parser is needed. Four dependency parsers trained on German texts are analyzed in this section: ParZu, spaCy, the Stanford Parser and the Mate tools parser.
+
+\subsection{Dependency parsers}
+
+ParZu \citep{Rico.2009} was trained on Europarl and includes the following components in its pipeline: sentence segmentation, tokenization, part-of-speech (POS) tagging, morphological analysis and the core component --- dependency parser, with a preprocessing step before and a postprocessing step after it. Remarkably, for all the tasks except dependency parsing, ready-made tools were chosen e.g. the punkt\_tokenizer from NTLK was used for tokenization, and clevertagger\footnote{\url{https://github.com/rsennrich/clevertagger}} --- for POS-tagging. The POS-tagger uses the Stuttgart-Tübingen Tag Set (STTS). The dependency analysis is represented in the CoNNL dependency format and includes an index, a lemma, a POS-tag, a language-specific POS-tag, morphological features, a head and a dependency relation for every token. The three other parsers use a similar set of features.
+
+spaCy\footnote{\url{https://spacy.io/}} was trained on TIGER Corpus and WikiNER dataset, and it provides two models for parsing German texts: \textit{de\_core\_news\_sm} (the small model) and \textit{de\_core\_news\_md} (the medium model), with \textit{de\_core\_news\_md} performing with a higher accuracy. Linguistic features supported by spaCy include sentence segmentation, tokenization, POS-tagging, dependency parsing, and named entity recognition. Unlike other parsers, it does not assign morphological features to tokens in languages other than English. Both the POS-tagger and the dependency parser use the TIGER Treebank annotation scheme.
+
+The Stanford Parser \citep{Qi.2018}, which was trained on the Negra corpus, offers a Python package that makes the software easy to install and to use. The neural pipeline of parser in the Python package includes tokenization, multi-word expansion, lemmatization, POS-tagging, morphological features tagging, and dependency parsing. The TIGER variant of STTS is used for POS-tagging, and grammatical relations are defined according to the Universal Dependencies representation\footnote{\url{http://universaldependencies.org/docsv1/}}.
+
+The Mate tools provide a transition-based dependency parser with joint POS-tagging and labeled dependency parsing \citep{Bohnet.2012}. The German models, therefore, include a lemmatizer model and a joint parsing model consisting of the tagger, morphology and parser parts. Before applying the Mate tools to a text, it should be transformed into one-word per line 2009 CoNNL format\footnote{\url{http://ufal.mff.cuni.cz/conll2009-st/task-description.html}} and tokenized. Although the Mate tools provide the script for the first transformation, they do not include a tokenizer. It is suggested to use an OpenNLP library\footnote{\url{https://opennlp.apache.org/}} for that.
+
+To test how well the parsers analyze lyrics, a song text of \textit{Splitter von Granaten} by Adam Angst was used. It was randomly chosen from the lyrics containing all the four types of grammatical constructions.
+
+Before comparing analyses of the four parsers, the best spaCy model needed to be chosen. Texts of songs are quite different from newspaper texts or Wikipedia articles that the models were trained on, so in order to make the best choice, analyses of two models were compared.
+
+Before applying a parser to the text, it was transformed in the way that every line of lyrics was represented as a separate sentence --- either by preserving the punctuation mark in the end of the line or by inserting a full stop. Despite that, the small model split the sentence \textit{Keine Nachbarn Nachts über Grenzen fliehen} into two parts: \textit{Keine Nachbarn} and \textit{Nachts über Grenzen fliehen}. The medium model perceives the sentence as a whole. 
+
+There were a number of cases when analysis of the small and the medium models differ. Analysis of punctuation marks was not taken into account, as it is not relevant for extracting grammatical constructions. Not including punctuation marks and tokens from the sentence \textit{Keine Nachbarn Nachts über Grenzen fliehen}, which was split differently by the two models, thirty-nine cases were detected. The medium model was preferred, as it correctly analyzed twenty-one tokens, compared to thirteen by the small model.
+
+Analyses of the four parsers exhibit some general differences and similarities, not necessarily connected to a certain grammatical construction. For instance, as has already been mentioned above, spaCy is the only parser that does not provide tokens with morphological characteristics. Morphological analysis of the Stanford Parser is easier to read than the analysis of ParZu and the Mate tool, as names of features are specified e.g. \textit{Case=Acc|Gender=Masc|Number=Sing} for \textit{Applaus} in \textit{die Welt spendet Applaus}. 
+
+Compared to spaCy, ParZu has more specific dependency relations inside the noun phrase --- many tokens that are analyzed as \textit{nk} (noun kernel) by spaCy have different relations in analysis by ParZu e.g. \textit{det} (determiner), \textit{attr} (attributive) or \textit{pn} (preposition complement). Dependency relations assigned by the Stanford Parser, however, are even more specific that the ones by ParZu. For instance, relation of adjective to noun is \textit{amod} (adjectival modifier), and of cardinal number to noun --- \textit{nummod} (numeric modifier), while both of the relations are marked \textit{attr} in the analysis of ParZu. 
+
+The tokenizer by the OpenNLP library, which is recommended by the Mate tools, does not behave completely usual, compared to tokenizers of other parsers --- for example, it treats two sentences with the question mark after the first sentence as one sentence. Moreover, it splits the line \textit{Asylbewerberheime sind doch sicher, alles klar... 43 Anschläge und dass in einem Jahr} in two sentences, with the first sentence ending with an ellipsis. ParZu, spaCy and the Stanford Parser treat this line as one sentence.
+
+In the next subsections, more specific differences between the analyses of the four parsers are discussed.
+
+\subsection{Prepositional phrases}
+
+The Stanford parser is the only parser that transforms a combination of a preposition with an article e.g. \textit{am} or \textit{aufs} in two separate words in its analysis. If a combination is non-standard, however, it is treated as an adverb. That makes it impossible to extract constructions like \textit{zum Vergnügen} or \textit{unterm Tellerrand} using the Stanford parser.
+
+In contrast to ParZu, no case is assigned to prepositions in the Stanford Parser and the Mate tools. Moreover, the Mate tools, unlike the three other parsers, assigns some of the tokens wrong morphological characteristics. Therefore, some of the rules cannot include morphological features of tokens, as it would lead to missing some of the constructions. 
+
+ParZu seems to be the best tool for extracting prepositional phrases, as its analyses are right, compared to the Mate tools, and it is able to extract constructions like \textit{zum Vergnügen} and \textit{unterm Tellerrand}, in contrast to the Stanford parser. Apart from that, unlike spaCy, ParZu includes morphological information, which helps to describe prepositional phrases that need to be extracted more precisely.
+
+\subsection{Verbs with prefixes}
+
+For getting a list of verbs with prefixes from a song text, candidates for such verbs should be identified first. That is exactly why the analysis from a dependency parser is needed --- to get all possible verb forms that then will be tested for having a prefix. 
+
+It is worth mentioning that extraction of verbs with prefixes is rather similar to extraction of finite verb forms. One of the differences is including passive forms for verbs with prefixes and excluding them for finite verb forms, as the structure of passive verbs forms is a grammar topic on its own. Another difference would be infinitives, which can serve as candidates for verbs with prefixes, but do not constitute a finite verb form. Therefore, even though some of the forms in both grammar topics coincide, it was decided to analyse results of parsers separately.
+
+In analyses of spaCy, ParZu and the Mate tools, some verb forms are assigned a wrong language-specific part-of-speech --- for example, \textit{erklingen} in \textit{Solang hier keine Sirenen erklingen} is assigned tag \textit{VVINF} (infinitive, full) instead of VVFIN (finite verb, full) by ParZu or \textit{abgehört} in \textit{Die NSA hat seit Jahrzehnten jeden abgehört} is tagged \textit{VVFIN} instead of \textit{VVPP} (perfect participle, full) by spaCy. In the first example, it is rather clear that the wrong tag was assigned due to ambiguity of the verb form. In the second case, however, the verb forms are not homonymous --- there is no finite verb form \textit{abgehört}. A mistake of the second type is only found in the analysis of spaCy. ParZu and the Mate tools analyze verb forms in a wrong way only if forms have homonyms.
+
+Mistakes made by all the three parsers lead to rules that are based on wrong analyses. Potentially, these rules can be the reason for extracting candidates for verbs with prefixes in a wrong way.
+
+In contrast to parsers discussed above, the Stanford Parser assigns all verb forms right language-specific part-of-speech tag. As its analysis leads only to clear right rules, it is considered the best parser for extracting verbs with prefixes.
+
+It is remarkable that no morphological information is needed about the extracted forms, as distractors can be generated by adding prefixes to the stem of the extracted verb. For finite verb forms, however, morphology can be very important.
+
+\subsection{Finite verb forms}
+
+There is no dependency parser that analyzed all the finite verb forms in the right way. With twenty-nine verb forms to extract in total, spaCy assigned wrong language-specific part-of-speech tags to six of them. In case of ParZu, it is five. ParZu does not provide any wrong morphological analysis, but in many verb forms, some morphological features are not determined. Including such forms, the parser analyzes thirteen verbs in a wrong way.
+
+The Stanford Parser assigns wrong language-specific part-of-speech tags to two verbs. Among other verbs which were assigned a morphological analysis, only one is analyzed wrong. All in all, three out of twenty-nine verbs exhibited difficulties for the parser.
+
+In analysis of the Mate tools, only one verb form was assigned a wrong language-specific part-of-speech tag. Another four verbs either were assigned wrong morphological properties or were not assigned any, which can also be considered as an error of the parser. Thus, five out of twenty-nine verbs lacked a proper analysis.
+
+As has been mentioned above, not only part-of-speech tags or language-specific part-of-speech tags, but also morphological features of verbs are important for extracting finite verb forms. Therefore, taking into account results of parsers that provide morphological information about word forms, the best parser for extracting finite verb forms is the Stanford Parser.
+
+\subsection{Passive voice}
+
+ParZu, spaCy and the Mate tools do not distinguish perfect tense and passive voice --- namely, the dependency relation between an auxiliary and the main verb is always \textit{aux} (in case of ParZu) or \textit{oc} (clausal object; in case of spaCy and the Mate tools). Thus, constructions \textit{hat verändert} and \textit{wird gemacht} would be parsed alike.
+
+The Stanford parser, however, has a special relation for verb forms in passive voice --- \textit{aux:pass}, while for perfect tense the relation would be called simply \textit{aux}.  Therefore, the Stanford Parser is best suitable for extracting constructions for this topic, as well.
+
+To make the conclusion, ParZu will be used for extracting prepositional phrases, and the Stanford Parser --- for extracting constructions for the rest of the topics.
+
+\section{Rules}
