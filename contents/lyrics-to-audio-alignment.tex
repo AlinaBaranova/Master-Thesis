@@ -27,28 +27,27 @@ There are several programs that support the process of manual lyrics-to-audio al
 
 \subsection{GNMIDI}
 
-% This program is only available for Microsoft Windows users, and offers a possibility to manually align half of the lyrics in its free version\footnote{Demo version of GNMIDI 3.17 was tested.}. The user pastes the text of the song as a whole and aligns the lines of the lyrics to the audio by pressing the \textit{Enter} key when a line is sung. In this way, a file of LRC format is created, where every line of the lyrics is assigned the time when it is sung (see Figure \ref{fig:lrc_format}\footnote{Example taken from \url{https://en.wikipedia.org/wiki/LRC_(file_format)}}). In files of this format, the time is usually written as \textbf{[mm:ss.xx]}, where \textbf{mm} stands for minutes, \textbf{ss} --- for seconds, and \textbf{xx} --- for hundredths of seconds. 
+This program is only available for Microsoft Windows users, and offers a possibility to manually align half of the lyrics in its free version\footnote{Demo version of GNMIDI 3.17 was tested.}. The user pastes the text of the song as a whole and aligns the lines of the lyrics to the audio by pressing the \textit{Enter} key when a line is sung. In this way, a file of LRC format is created, where every line of the lyrics is assigned the time when it is sung (see Figure \ref{fig:lrcFormat}\footnote{Example taken from \url{https://en.wikipedia.org/wiki/LRC_(file_format)}}). In files of this format, the time is usually written as \textbf{[mm:ss.xx]}, where \textbf{mm} stands for minutes, \textbf{ss} --- for seconds, and \textbf{xx} --- for hundredths of seconds. 
 
-% \begin{figure}[H]
-    % \begin{verbatim} 
-        % [00:12.00]Line 1 lyrics
-        % [00:17.20]Line 2 lyrics
-        % [00:21.10]Line 3 lyrics
-        % ...
-        % [mm:ss.xx]last lyrics line 
-    % \end{verbatim}
-%     \caption{LRC Format}
-%     \label{fig:lrc_format}
-% \end{figure}
+\begin{figure}[H]
+    \begin{verbatim} 
+        [00:12.00]Line 1 lyrics
+        [00:17.20]Line 2 lyrics
+        [00:21.10]Line 3 lyrics
+        ...
+        [mm:ss.xx]last lyrics line  \end{verbatim}
+    \caption{LRC Format}
+    \label{fig:lrcFormat}
+\end{figure}
 
-% When the user exports the resulting file from GNMIDI, however, no hundredths of seconds are saved in the file. The karaoke demonstration in the program (see Figure \ref{fig:karaoke_demo}) also relies on times without hundredths of seconds. 
+When the user exports the resulting file from GNMIDI, however, no hundredths of seconds are saved in the file. The karaoke demonstration in the program (see Figure \ref{fig:karaokeDemo}) also relies on times without hundredths of seconds. 
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics{../images/gnmidi_screenshot.png}
-%     \caption{GNMIDI Karaoke Demonstration (song \textit{Mutter} by Rammstein)}
-%     \label{fig:karaoke_demo}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics{../images/gnmidiScreenshot.png}
+    \caption{GNMIDI Karaoke Demonstration (song \textit{Mutter} by Rammstein)}
+    \label{fig:karaokeDemo}
+\end{figure}
 
 Apart from that, GNMIDI does not support UTF-8 format, which is important for lyrics in German.
 
