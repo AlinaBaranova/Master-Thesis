@@ -1,0 +1,29 @@
+\chapter{Song Selection}
+\label{sec:selection}
+
+For creating an app for learning German grammar through songs, a set of songs needed to be sampled. Consulting German second language, or L2 learners allowed to address the issue objectively, independent of the author's own musical preferences, and receive a number of artists belonging to various genres.
+
+Google Forms\footnote{\url{https://docs.google.com/forms/}}, one of the platforms for online questionnaires, was used for getting information about favorite German artists of language learners. Students whose native language is not German were asked to name three artists or bands whose songs they would like to see in an application for learning German. Every person taking part in the questionnaire was asked to write down three names of artists and choose an appropriate genre for each of them. There were ten options to choose a genre from: pop, rock, dance/electronic/house, soundtracks, hip-hop/rap/trap, singer/songwriter, classical, R&B, soul/blues, metal. The set of genres was taken from Music Consumer Insight Report conducted in 2018 by ifpi [CITE]. To make a list of the ten most popular genres for this report, 19,000 participants from eighteen countries were surveyed. As in the survey for the most popular music genres, the data received from the questionnaire was based on participants' own definitions of genres.
+
+In total, twenty-three people filled the form, which resulted in a sample of fifty-five unique artists.
+
+As the app is dependent on YouTube [CITE???] for getting audio-tracks for songs, the songs were chosen based on this video-sharing platform. It was decided to take a random number of songs --- three --- by every artist. For choosing songs, videos by an artist were sorted by the greatest number of view counts. Moreover, only songs with official videos of the artist were chosen. Official lyrics videos --- as, for example, \textit{In Deiner Kleinen Welt} by Philipp Dittberner --- were also taken into account. Sometimes, however, it was unclear which video can be counted as official, as an artist or band did not have an official YouTube channel --- for instance, in case of the band \textit{Ja, Panik}. In such cases, the videos that looked like video-clips were chosen. Another important criteria was choosing songs by an artist or band alone, without other musicians featuring in the videos. Nevertheless, this rule also led to an exception, as most of the songs by Audio88 are made in a collaboration with a rapper Yassin. On this stage of sampling a song set, an artist or a band were excluded if they did not have official videos or at least videos that look like video-clips.
+
+Downloading lyrics manually from the Internet would take a considerable amount of time, that is why ways of doing it automatically have been surveyed. According to the website of Genius\footnote{\url{https://genius.com/}}, it contains ``over 25 million songs, albums, artists, and annotations'', while providing an API that can be used for downloading song lyrics. Apart from that, LyricsGenius\footnote{\url{https://github.com/johnwmillr/LyricsGenius}} --- a Python client for the API --- is available. The following code allows downloading lyrics using song name and artist name:
+
+\begin{lstlisting}[language=Python, caption={Downloading song lyrics}, label={lst:genius}]
+    import lyricsgenius
+    
+    genius = lyricsgenius.Genius(CLIENT_ACCESS_TOKEN_HERE)
+    song = genius.search_song(SONG_NAME, ARTIST_NAME)
+    
+    print(song.lyrics)
+\end{lstlisting}
+
+However, not all songs that have videos on YouTube also have lyrics on Genius.com. To avoid such songs, it was checked if the most popular song on YouTube by the artist is provided with lyrics on the website. If this was not the case, songs of the artist were not included in the sample. 
+
+All in all, forty-four out of fifty-five artists acquired with the questionnaire were left, resulting in 131 songs for the sample. Only one song by one of the forty-four artists --- \textit{Am ersten Sonntag nach dem Weltuntergang} by Element of Crime --- was not featured on Genius. That shows that the strategy to predict which artists have song lyrics on the website by checking the most popular song is rather accurate.
+
+After acquiring names of songs and their artists, lyrics were automatically downloaded with the code similar to Listing \ref{lst:genius}. The only strange result was produced by downloading song \textit{Auf uns} by Andreas Bourani --- instead of the song text, one would get a list of songs by different artists. Due to this problem, lyrics for this song were manually copied from the website. 
+
+When all the texts were downloaded, some parts of texts which would hinder synchronization of lyrics with audio have been deleted e.g. ``[Strophe II]:'' or text in brackets in ``Ja ja, ich weiß [10x]''. Due to examples of the second type, is very probable that at the stage of synchronizing song text with audio some lines will need to be inserted.
